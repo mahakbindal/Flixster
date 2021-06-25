@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#2C2A2A"
     tools:context=".MovieDetails">
 
     <ImageView
@@ -25,6 +26,7 @@
         android:layout_toEndOf="@+id/ivPosterDesc"
         android:layout_toRightOf="@id/ivPosterDesc"
         android:numStars="5"
+        android:progressTint="#FFEB3B"
         android:stepSize="0.5" />
 
     <TextView
@@ -38,6 +40,7 @@
         android:layout_marginTop="10dp"
         android:layout_toEndOf="@+id/ivPosterDesc"
         android:layout_toRightOf="@id/ivPosterDesc"
+        android:textColor="#FFFFFF"
         android:textSize="26sp"
         tools:text="A Quiet Place Part II" />
 
@@ -46,11 +49,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rbMovieRating"
-        android:layout_toRightOf="@id/ivPosterDesc"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="4dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="1dp"
+        android:layout_toRightOf="@id/ivPosterDesc"
+        android:textColor="#FFFFFF"
         android:textSize="16sp"
         tools:text="Following the events at home, the Abbott family now face the terrors of the outside world. Forced to venture into the unknown, they realize that the creatures that hunt by sound are not the only threats that lurk beyond the sand path." />
 

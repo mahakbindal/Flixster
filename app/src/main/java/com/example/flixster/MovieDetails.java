@@ -1,9 +1,12 @@
 package com.example.flixster;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.codepath.asynchttpclient.AsyncHttpClient;
@@ -45,8 +49,13 @@ public class MovieDetails extends AppCompatActivity {
         String title = i.getStringExtra("title");
         String overview = i.getStringExtra("overview");
 
-        // Set Action Bar title to title of movie
-        getSupportActionBar().setTitle(i.getStringExtra("title"));
+        // Customize action bar (title and color)
+        ActionBar toolbar;
+        toolbar = getSupportActionBar();
+        toolbar.setTitle(i.getStringExtra("title"));
+
+        ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#7a2121"));
+        toolbar.setBackgroundDrawable(colorDrawable);
 
         float voteAverage = (float) i.getDoubleExtra("movieRating", 0);
 

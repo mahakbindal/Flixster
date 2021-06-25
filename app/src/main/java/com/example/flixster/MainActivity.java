@@ -1,10 +1,13 @@
 package com.example.flixster;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -34,10 +37,16 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.View
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
         ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+        ActionBar toolbar;
+        toolbar = getSupportActionBar();
+        toolbar.setTitle("Flixster \uD83C\uDF7F");
+
+        ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#7a2121"));
+        toolbar.setBackgroundDrawable(colorDrawable);
 
         movies = new ArrayList<>();
 

@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="#2C2A2A"
+    android:backgroundTint="#2C2A2A">
 
     <ImageView
         android:id="@+id/ivPoster"
@@ -13,9 +15,9 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="0dp"
         android:layout_marginTop="0dp"
-        tools:srcCompat="@tools:sample/avatars"
+        android:adjustViewBounds="true"
         android:scaleType="fitCenter"
-        android:adjustViewBounds="true"/>
+        tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/tvTitle"
@@ -25,10 +27,11 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="0dp"
         android:layout_toEndOf="@+id/ivPoster"
+        android:singleLine="true"
         android:text="TextView"
+        android:textColor="#E6E6E6"
         android:textSize="24sp"
-        tools:text="A Quiet Place Part II"
-        android:singleLine="true"/>
+        tools:text="A Quiet Place Part II" />
 
     <TextView
         android:id="@+id/tvOverview"
@@ -38,7 +41,8 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:layout_toEndOf="@+id/ivPoster"
-        tools:text="Following the events at home, the Abbott family now face the terrors of the outside world. Forced to venture into the unknown, they realize that the creatures that hunt by sound are not the only threats that lurk beyond the sand path."
+        android:ellipsize="end"
         android:maxLines="7"
-        android:ellipsize="end"/>
+        android:textColor="#FFFFFF"
+        tools:text="Following the events at home, the Abbott family now face the terrors of the outside world. Forced to venture into the unknown, they realize that the creatures that hunt by sound are not the only threats that lurk beyond the sand path." />
 </RelativeLayout>
