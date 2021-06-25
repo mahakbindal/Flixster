@@ -5,51 +5,93 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.codepath.asynchttpclient.AsyncHttpClient;
+import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
+import com.example.flixster.databinding.ActivityMainBinding;
+import com.example.flixster.databinding.ActivityMovieDetailsBinding;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+import okhttp3.Headers;
 
 public class MovieDetails extends AppCompatActivity {
 
-    TextView tvTitleDesc;
-    TextView tvOverviewDesc;
-    ImageView ivPosterDesc;
-    RatingBar rbMovieRating;
+    public static final String VIDEO_FST = "https://api.themoviedb.org/3/movie/";
+    public static final String VIDEO_SND = "/videos?api_key=44078a8234c8775235f52ddecaf3967d";
+    private ActivityMovieDetailsBinding binding;
+    public static final String TAG = "MovieDetailsActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_movie_details);
-        tvTitleDesc = findViewById(R.id.tvTitleDesc);
-        tvOverviewDesc = findViewById(R.id.tvOverviewDesc);
-        ivPosterDesc = findViewById(R.id.ivPosterDesc);
-        rbMovieRating = findViewById(R.id.rbMovieRating);
+        binding = ActivityMovieDetailsBinding.inflate(getLayoutInflater());
+
+        View view = binding.getRoot();
+        setContentView(view);
 
         Intent i = getIntent();
         String title = i.getStringExtra("title");
         String overview = i.getStringExtra("overview");
+
+        // Set Action Bar title to title of movie
+        getSupportActionBar().setTitle(i.getStringExtra("title"));
+
         float voteAverage = (float) i.getDoubleExtra("movieRating", 0);
 
-        // Change poster type based on portrait or landscape orientation
-        String poster;
-        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            poster = i.getStringExtra("backdropPoster");
-        }
-        else {
-            poster = i.getStringExtra("poster");
-        }
+        binding.tvTitleDesc.setText(title);
+        binding.tvOverviewDesc.setText(overview);
+        binding.rbMovieRating.setRating(voteAverage / 2.0f);
 
-        tvTitleDesc.setText(title);
-        tvOverviewDesc.setText(overview);
-        rbMovieRating.setRating(voteAverage / 2.0f);
-
+        int radius = 30;
+        int margin = 0;
         Glide.with(this)
-                .load(poster)
-                .into(ivPosterDesc);
+                .load(i.getStringExtra("poster"))
+                .transform(new RoundedCornersTransformation(radius, margin))
+                .into(binding.ivPosterDesc);
+
+        binding.btnPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int id = i.getIntExtra("id", 0);
+                AsyncHttpClient client = new AsyncHttpClient();
+                client.get(VIDEO_FST + id + VIDEO_SND, new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int i, Headers headers, JSON json) {
+                        Log.d(TAG, "onSuccess");
+                        JSONObject jsonObject = json.jsonObject;
+                        try {
+                            JSONArray results = jsonObject.getJSONArray("results");
+                            String key = results.getJSONObject(0).getString("key");
+                            Intent intent = new Intent(MovieDetails.this, MovieTrailerActivity.class);
+                            intent.putExtra("key", key);
+                            startActivity(intent);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int i, Headers headers, String s, Throwable throwable) {
+                        Log.d(TAG, "onFailure");
+
+                    }
+                });
+            }
+        });
 
     }
+
 }

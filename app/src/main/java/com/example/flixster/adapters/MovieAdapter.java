@@ -16,12 +16,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.flixster.MovieDetails;
 import com.example.flixster.R;
+import com.example.flixster.databinding.ActivityMainBinding;
 import com.example.flixster.models.Movie;
 
 import org.jetbrains.annotations.NotNull;
 import org.w3c.dom.Text;
 
 import java.util.List;
+
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
 
@@ -39,6 +42,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(context);
 
         Log.d("MovieAdapter", "onCreateViewHolder");
         View movieView = LayoutInflater.from(context).inflate(R.layout.item_movie, parent, false);
@@ -71,9 +75,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
 
         public ViewHolder(@NonNull View itemView, OnClickListener onClickListener) {
             super(itemView);
+
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvOverview = itemView.findViewById(R.id.tvOverview);
             ivPoster = itemView.findViewById(R.id.ivPoster);
+
             this.onClickListener = onClickListener;
             itemView.setOnClickListener(this);
         }
@@ -94,10 +100,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
                 placeholderOrientation = R.mipmap.placeholder_foreground;
             }
 
-
+            int radius = 30;
+            int margin = 10;
             Glide.with(context)
                     .load(imageURL)
                     .placeholder(placeholderOrientation)
+                    .transform(new RoundedCornersTransformation(radius, margin))
                     .into(ivPoster);
         }
 

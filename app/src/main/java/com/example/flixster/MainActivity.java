@@ -7,10 +7,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.flixster.adapters.MovieAdapter;
+import com.example.flixster.databinding.ActivityMainBinding;
 import com.example.flixster.models.Movie;
 
 import org.json.JSONArray;
@@ -24,7 +26,7 @@ import okhttp3.Headers;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.ViewHolder.OnClickListener{
 
-    public static final String NOW_PLAYING_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=44078a8234c8775235f52ddecaf3967d";
+    public static final String NOW_PLAYING_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=";
     public static final String TAG = "MainActivity";
 
     List<Movie> movies;
@@ -32,21 +34,24 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.View
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        RecyclerView rvMovies = findViewById(R.id.rvMovies);
+//        setContentView(R.layout.activity_main);
+        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
+
         movies = new ArrayList<>();
 
         // Create the adapter
         MovieAdapter movieAdapter = new MovieAdapter(this, movies, this);
 
         // Set the adapter on the recycler view
-        rvMovies.setAdapter(movieAdapter);
+        binding.rvMovies.setAdapter(movieAdapter);
 
         // Set a Layout Manager on the recycler view
-        rvMovies.setLayoutManager(new LinearLayoutManager(this));
+        binding.rvMovies.setLayoutManager(new LinearLayoutManager(this));
 
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get(NOW_PLAYING_URL, new JsonHttpResponseHandler() {
+        client.get(NOW_PLAYING_URL + getString(R.string.IMDB_API_KEY), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Headers headers, JSON json) {
                 Log.d(TAG, "onSuccess");
@@ -81,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.View
         intent.putExtra("poster", movie.getPosterPath());
         intent.putExtra("backdropPoster", movie.getBackdropPath());
         intent.putExtra("movieRating", movie.getVoteAverage());
+        intent.putExtra("id", movie.getId());
         startActivity(intent);
 
     }
